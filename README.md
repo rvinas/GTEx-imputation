@@ -14,4 +14,9 @@ seaborn==0.9.0
 pandas==0.24.2
 matplotlib==3.0.3
 scikit-learn==0.22.1
+```
 
+## Training
+```
+python gtex_gain.py
+```
