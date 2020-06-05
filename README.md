@@ -21,6 +21,7 @@ scikit-learn==0.22.1
 ```
 
 ## Training
+To train the model with default hyperparameters, run:
 ```
 python gtex_gain.py
 ```
