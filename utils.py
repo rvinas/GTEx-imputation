@@ -8,11 +8,11 @@ from sklearn.manifold import TSNE
 import pickle
 from collections import Counter
 
-GTEX_FILE = 'data/GTEX_data.csv'
-GTEX_FILE_CORRECTED = 'data/GTEX_CORRECTED_data.csv'
-TIAGO_DATA_DIR = '/local/sdc/tmla2/gtex-analysis/data_filtered'
-ENSEMBL_2_GENE_SYMBOLS = '/local/sdc/tmla2/gtex-analysis/meta_data/genes_ENSEMBL_to_official_gene.csv'
-METADATA_FILE = 'data/GTEx_Analysis_2017-06-05_v8_Annotations_SubjectPhenotypesDS.txt'
+GTEX_FILE = 'PATH_TO_PROCESSED_COMBINED_DATA'
+GTEX_FILE_CORRECTED = 'CURRENTLY_UNUSED'
+DATA_DIR = 'PATH_TO_FOLDER_WITH_PROCESSED_DATA_PER_TISSUE'
+ENSEMBL_2_GENE_SYMBOLS = 'PATH_TO_ENSEMBL_HUGO_DICTIONARY/genes_ENSEMBL_to_official_gene.csv'
+METADATA_FILE = 'METADATA_FOLDER/GTEx_Analysis_2017-06-05_v8_Annotations_SubjectPhenotypesDS.txt'
 
 
 # ------------------
@@ -41,7 +41,7 @@ def ENSEMBL_to_gene_symbols(ENSEMBL_symbols, file=ENSEMBL_2_GENE_SYMBOLS):
     return np.array(gene_symbols), np.array(ENSEMBL_found)
 
 
-def load_gtex_unique_ENSEMBL(data_dir=TIAGO_DATA_DIR):
+def load_gtex_unique_ENSEMBL(data_dir=DATA_DIR):
     # Find gene intersection
     tissues = [f.split('.')[0] for f in os.listdir(data_dir) if f.endswith('.pkl')]
     print(tissues)
@@ -61,7 +61,7 @@ def load_gtex_unique_ENSEMBL(data_dir=TIAGO_DATA_DIR):
     return unique_genes
 
 
-def load_gtex_unique_genes(prefix='only_geneids_CORRECTED_', data_dir=TIAGO_DATA_DIR):
+def load_gtex_unique_genes(prefix='only_geneids_CORRECTED_', data_dir=DATA_DIR):
     # Find gene intersection
     tissues = [f.split('.')[0] for f in os.listdir(data_dir) if f.endswith('.pkl')]
     print(tissues)
@@ -81,7 +81,7 @@ def load_gtex_unique_genes(prefix='only_geneids_CORRECTED_', data_dir=TIAGO_DATA
     return unique_genes
 
 
-def load_gtex_tiago(gene_symbols, prefix='only_geneids_', data_dir=TIAGO_DATA_DIR, convert_to_ENSEMBL=False):
+def load_merge_gtex(gene_symbols, prefix='only_geneids_', data_dir=DATA_DIR, convert_to_ENSEMBL=False):
     # gtex_files = [data_dir + f for f in os.listdir(data_dir) if f.endswith('.v8.normalized_expression.bed')]
     tissues = [f.split('.')[0] for f in os.listdir(data_dir) if f.endswith('.pkl')]
     print(os.listdir(data_dir))
@@ -113,7 +113,7 @@ def load_gtex_tiago(gene_symbols, prefix='only_geneids_', data_dir=TIAGO_DATA_DI
     return merged_df
 
 
-def load_gtex_tiago_CORRECTED(gene_symbols, prefix='only_geneids_CORRECTED_', data_dir=TIAGO_DATA_DIR,
+def load_merge_gtex_CORRECTED(gene_symbols, prefix='only_geneids_CORRECTED_', data_dir=DATA_DIR,
                               convert_to_ENSEMBL=False):
     # gtex_files = [data_dir + f for f in os.listdir(data_dir) if f.endswith('.v8.normalized_expression.bed')]
     tissues = [f.split('.')[0] for f in os.listdir(data_dir) if f.endswith('.pkl')]
@@ -495,26 +495,5 @@ if __name__ == '__main__':
     # ENSEMBL_symbols = load_gtex_unique_ENSEMBL()
     # print(len(ENSEMBL_symbols))
     gene_symbols = load_gtex_unique_genes(prefix='only_geneids_')
-    df = load_gtex_tiago(gene_symbols)
+    df = load_merge_gtex(gene_symbols)
     df.to_csv(GTEX_FILE)
-    # x, symbols, sampl_ids, tissues = load_gtex()
-    # print(sampl_ids)
-    # print(len(set(sampl_ids)))
-
-    # Merge CORRECTED data
-    # gene_symbols = load_gtex_unique_genes(prefix='only_geneids_CORRECTED_')
-    # df = load_gtex_tiago_CORRECTED(gene_symbols, convert_to_ENSEMBL=False)
-    # df.to_csv(GTEX_FILE_CORRECTED)
-    # print(len(ENSEMBL_symbols))
-    # df = load_gtex_tiago(ENSEMBL_symbols)
-    # df.to_csv(GTEX_FILE)
-    # x, symbols, sampl_ids, tissues = load_gtex()
-    # print(sampl_ids)
-    # print(len(set(sampl_ids)))
-
-    # load_gtex_mtissue_imputation()
-
-    # df = gtex_metadata()
-
-    # sampl_ids = ['GTEX-1117F', 'GTEX-111CU', 'GTEX-111YS']
-    # x = df.loc[sampl_ids, ['SEX', 'AGE', 'COHORT']]
