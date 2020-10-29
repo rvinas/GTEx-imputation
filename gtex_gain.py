@@ -375,6 +375,10 @@ if __name__ == '__main__':
     print(sampl_ids_test)
     num_covs_train, num_covs_test, _, _ = split_train_test_v2(num_covs, sampl_ids)
     cat_covs_train, cat_covs_test, _, _ = split_train_test_v2(cat_covs, sampl_ids)
+    x_train, x_val, _, sampl_ids_val = split_train_test_v2(x_train, sampl_ids_train, train_rate=0.8)
+    num_covs_train, num_covs_val, _, _ = split_train_test_v2(num_covs_train, sampl_ids_train, train_rate=0.8)
+    cat_covs_train, cat_covs_val, sampl_ids_train, sampl_ids_val = split_train_test_v2(cat_covs_train, sampl_ids_train, train_rate=0.8)
+
 
     # Define model
     vocab_sizes = [len(c) for c in cat_dicts]
@@ -396,16 +400,16 @@ if __name__ == '__main__':
 
 
     # Evaluation metrics
-    def score_fn(x_test, cat_covs_test, num_covs_test):
+    def score_fn(x_val, cat_covs_val, num_covs_val):
         def _score(gen):
-            bs, nb_genes = x_test.shape
+            bs, nb_genes = x_val.shape
             mask, _, _ = get_mask_hint_b(bs, nb_genes, m_low=0.5)
-            x_gen = predict(x=x_test,
-                            cc=cat_covs_test,
-                            nc=num_covs_test,
+            x_gen = predict(x=x_val,
+                            cc=cat_covs_val,
+                            nc=num_covs_val,
                             mask=mask,
                             gen=gen)
-            imp_mse = np.sum((1 - mask) * (x_gen - x_test) ** 2) / np.sum(1 - mask)
+            imp_mse = np.sum((1 - mask) * (x_gen - x_val) ** 2) / np.sum(1 - mask)
             # Compute upper bound with x_train?
             return -imp_mse
 
@@ -442,9 +446,9 @@ if __name__ == '__main__':
           lambd_sup=args.lambd_sup,
           b_low=args.b_low,
           b_high=args.b_high,
-          score_fn=score_fn(x_test, cat_covs_test, num_covs_test),
+          score_fn=score_fn(x_val, cat_covs_val, num_covs_val),
           save_fn=save_fn)
 
     # Evaluate data
     score = score_fn(x_test, cat_covs_test, num_covs_test)(gen)
-    print('Gamma(Dx, Dz): {:.2f}'.format(score))
+    print('Score: {:.2f}'.format(score))
