@@ -1,0 +1,43 @@
+gpu:
+  value: 3
+dataset:
+  value: 'GTEx'
+pathway:
+  value: 'Alzheimer'
+model:
+  value: 'InductiveImputer'
+lr:
+  desc: Learning rate for optimiser
+  value: 0.001
+batch_size:
+  value: 128
+dropout:
+  desc: Probability of dropping out a hidden unit
+  value: 0
+bn:
+  desc: Whether to use batch normalisation
+  value: True
+m_low:
+  desc: Max probability of m
+  value: 0.5
+m_high:
+  desc: Min probability of m
+  value: 0.5
+epochs:
+  desc: Maximum number of epochs to run
+  value: 200
+steps_per_epoch:
+  desc: Number of train steps per epoch
+  value: 100
+patience:
+  value: 10
+nb_layers:
+  desc: Number of hidden layers
+  value: 2
+hdim:
+  desc: Hidden dimension of MLPs
+  value: 512
+save:
+  value: True
+save_dir:
+  value: '/local/scratch/rv340/gtex_imputation'

@@ -1,0 +1,45 @@
+program: imputation.py
+method: random
+project: GTEx_imputation
+metric:
+  goal: minimize
+  name: val_loss
+parameters:
+  gpu:
+    value: 3
+  dataset:
+    value: 'GTEx'
+  pathway:
+    value: ''
+  model:
+    value: 'InductiveImputer'
+  lr:
+    desc: Learning rate for optimiser
+    values: [0.001, 0.0001]
+  batch_size:
+    value: 32
+  dropout:
+    desc: Probability of dropping out a hidden unit
+    values: [0, 0.1, 0.2, 0.3, 0.4, 0.5]
+  bn:
+    desc: Whether to use batch normalisation
+    value: True
+  epochs:
+    desc: Maximum number of epochs to run
+    value: 200
+  steps_per_epoch:
+    desc: Number of train steps per epoch
+    value: 100
+  patience:
+    value: 30
+  nb_layers:
+    desc: Number of hidden layers
+    values: [1, 2, 3, 4]
+  hdim:
+    desc: Hidden dimension of MLPs
+    min: 100
+    max: 3000
+  save:
+    value: False
+  save_dir:
+    value: '/local/scratch/rv340/gtex_imputation'
