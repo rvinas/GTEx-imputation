@@ -62,10 +62,19 @@ def split_train_test(x, sampl_ids, train_rate=0.75):
     return x_train, x_test, sample_ids_train, sample_ids_test
 
 
+def get_dummies(cat_covs):
+    cat_covs_onehot = []
+    for c in range(cat_covs.shape[-1]):
+        col = cat_covs[:, c]
+        dummies = np.eye(len(np.unique(col)))[col]
+        cat_covs_onehot.append(dummies)
+    cat_covs_onehot = np.concatenate(cat_covs_onehot, axis=-1)
+    return cat_covs_onehot
+
+
 def sample_mask(bs, nb_genes, m_low=0.5, m_high=0.95):
     # Compute masks
     # m_low = 0.5?
     p_mask = np.random.uniform(low=m_low, high=m_high, size=(bs,))  # Probability of setting mask to 0
     mask = np.random.binomial(1, p_mask, size=(nb_genes, bs)).astype(np.float32).T  # Shape=(bs, nb_genes)
-
     return mask

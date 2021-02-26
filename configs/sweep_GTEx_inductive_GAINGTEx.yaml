@@ -6,17 +6,25 @@ metric:
   name: val_loss
 parameters:
   gpu:
-    value: 0
+    value: 1
   dataset:
     value: 'GTEx'
   pathway:
     value: ''
   model:
-    value: 'UnguidedImputer'
+    value: 'GAINGTEx'
   inplace_mode:
     value: False
   sweep:
     value: True
+  lambd_sup:
+    value: 1
+  m_low:
+    desc: Max probability of m
+    value: 0.5
+  m_high:
+    desc: Min probability of m
+    value: 0.5
   lr:
     desc: Learning rate for optimiser
     values: [0.001, 0.0001]

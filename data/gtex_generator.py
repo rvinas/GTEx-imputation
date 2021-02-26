@@ -24,7 +24,7 @@ def GTEx_metadata(file):
 
 class GTExGenerator:
     def __init__(self, file=GTEX_FILE, metadata_file=METADATA_FILE, pathway=None, batch_size=128, m_low=0.5, m_high=0.5,
-                 random_seed=0):
+                 random_seed=0, inplace_mode=False):
         np.random.seed(random_seed)
         self.file = file
         self.metadata_file = metadata_file
@@ -32,6 +32,7 @@ class GTExGenerator:
         self.m_low = m_low
         self.m_high = m_high
         self.pathway = pathway
+        self.inplace_mode = inplace_mode
 
         # Load data
         x, gene_symbols, self.sample_ids, self.tissues = GTEx(file)
@@ -98,9 +99,14 @@ class GTExGenerator:
         self.sample_ids_val = sampl_ids_val
         self.sample_ids_test = sampl_ids_test
 
-        self.train_idxs = np.empty(shape=(0,))
-        self.val_idxs = np.empty(shape=(0,))
+        self.train_mask = sample_mask(len(sampl_ids_train), self.nb_genes, m_low=m_low, m_high=m_high)
+        self.val_mask = sample_mask(len(sampl_ids_val), self.nb_genes, m_low=m_low, m_high=m_high)
+        self.test_mask = sample_mask(len(sampl_ids_test), self.nb_genes, m_low=m_low, m_high=m_high)
 
+
+
+
+    """
     def train_sample(self, size=None):
         if size is None:
             size = self.batch_size
@@ -109,16 +115,22 @@ class GTExGenerator:
         cc = self.cat_covs_train[sample_idxs]
         nc = self.num_covs_train[sample_idxs]
         return x, cc, nc
+    """
 
-    def train_sample_MCAR(self, size=None, m_low=None, m_high=None):
+    def train_sample_MCAR(self, size=None):
         if size is None:
             size = self.batch_size
-        if m_low is None:
-            m_low = self.m_low
-        if m_high is None:
-            m_high = self.m_high
-        mask = sample_mask(size, self.nb_genes, m_low=m_low, m_high=m_high)
-        x, cc, nc = self.train_sample(size)
+        sample_idxs = np.random.choice(self.x_train.shape[0], size=size, replace=False)
+        x = self.x_train[sample_idxs]
+        cc = self.cat_covs_train[sample_idxs]
+        nc = self.num_covs_train[sample_idxs]
+        mask_2 = sample_mask(size, self.nb_genes, m_low=self.m_low, m_high=self.m_high)
+        if self.inplace_mode:
+            mask_1 = self.train_mask[sample_idxs]
+        else:
+            mask_1 = sample_mask(size, self.nb_genes, m_low=self.m_low, m_high=self.m_high)
+        mask = (mask_1, mask_2)
+        # x, cc, nc = self.train_sample(size)
         # x_ = mask * x
         # y = (1 - mask) * x
         return (x, cc, nc, mask), x
@@ -133,14 +145,15 @@ class GTExGenerator:
         nc = self.num_covs_val
         return x, cc, nc
 
-    def val_sample_MCAR(self, m_low=None, m_high=None):
-        if m_low is None:
-            m_low = self.m_low
-        if m_high is None:
-            m_high = self.m_high
+    def val_sample_MCAR(self):
         x, cc, nc = self.val_sample()
-        size = x.shape[0]
-        mask = sample_mask(size, self.nb_genes, m_low=m_low, m_high=m_high)
+        # size = x.shape[0]
+        if self.inplace_mode:
+            input_mask = sample_mask(x.shape[0], self.nb_genes, m_low=self.m_low, m_high=self.m_high)
+            mask = (self.val_mask, input_mask)  # Trick to speed up training
+        else:
+            mask = sample_mask(x.shape[0], self.nb_genes, m_low=self.m_low, m_high=self.m_high)
+        # mask = sample_mask(size, self.nb_genes, m_low=m_low, m_high=m_high)
         # x_ = mask * x
         # y = (1 - mask) * x
         return (x, cc, nc, mask), x
@@ -151,12 +164,11 @@ class GTExGenerator:
         nc = self.num_covs_test
         return x, cc, nc
 
-    def test_sample_MCAR(self, m_low=None, m_high=None, random_seed=0):
+    def test_sample_MCAR(self, m_low=0.5, m_high=0.5, random_seed=0):
+        if self.inplace_mode:
+            return self.train_sample_MCAR(size=len(self.sample_ids_train))
+
         np.random.seed(random_seed)
-        if m_low is None:
-            m_low = self.m_low
-        if m_high is None:
-            m_high = self.m_high
         x, cc, nc = self.test_sample()
         size = x.shape[0]
         mask = sample_mask(size, self.nb_genes, m_low=m_low, m_high=m_high)

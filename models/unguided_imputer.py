@@ -1,25 +1,19 @@
 import tensorflow as tf
-import tensorflow_probability as tfp
 from models.base_imputer import BaseImputer
+from models.train_utils import sample_mask_tf
+from data.data_utils import sample_mask
+import numpy as np
 
 tfk = tf.keras
 tfkl = tf.keras.layers
 
 
-def sample_mask_tf(bs, nb_genes, m_low=0.5, m_high=0.5):
-    # Compute masks
-    # m_low = 0.5?
-    p_mask = tf.random.uniform(shape=(bs,), minval=m_low, maxval=m_high)  # Probability of setting mask to 0
-    binomial = tfp.distributions.Binomial(1, probs=p_mask)
-    mask = tf.transpose(binomial.sample(nb_genes))
-
-    return mask
-
-
 class UnguidedImputer(BaseImputer):
-    def __init__(self, x_dim, vocab_sizes, nb_numeric, nb_categoric, config, name='UnguidedImputer', **kwargs):
+    def __init__(self, x_dim, vocab_sizes, nb_numeric, nb_categoric, config, m_low=0.5, m_high=0.5, name='UnguidedImputer', **kwargs):
         super(UnguidedImputer, self).__init__(x_dim, vocab_sizes, nb_numeric, nb_categoric, config, name=name,
                                                **kwargs)
+        self.m_low = m_low
+        self.m_high = m_high
 
     def loss_fn(self, x, x_gen, eps=1e-7):
         x, mask = x
@@ -37,6 +31,9 @@ class UnguidedImputer(BaseImputer):
 
     def call(self, x, **kwargs):
         x, cat, num, mask = x
+        if type(mask) is tuple:  # Keras is initialising
+            mask = mask[0]
+
         x_ = x * mask
         return self.model([x_, cat, num, mask], **kwargs)
 
@@ -46,10 +43,11 @@ class UnguidedImputer(BaseImputer):
         x, y = data
         x, cat, num, mask = x
 
-        bs = tf.shape(x)[0]
-        input_mask = sample_mask_tf(bs=bs, nb_genes=self.x_dim)
-        output_mask = mask * (1 - input_mask)
-        input_mask = mask * input_mask
+        mask, input_mask = mask
+        if self.config.inplace_mode:  # mask should be all ones
+            output_mask = mask * (1 - input_mask)
+        else:
+            output_mask = (1 - input_mask)
 
         with tf.GradientTape() as tape:
             y_pred = self.call((x, cat, num, input_mask), training=True)  # Forward pass
@@ -73,9 +71,15 @@ class UnguidedImputer(BaseImputer):
         x, cat, num, mask = x
 
         bs = tf.shape(x)[0]
-        input_mask = sample_mask_tf(bs=bs, nb_genes=self.x_dim)
-        output_mask = mask * (1 - input_mask)
-        input_mask = mask * input_mask
+        if self.config.inplace_mode:
+            mask, input_mask = mask
+            # input_mask = sample_mask(bs=mask.shape[0], nb_genes=self.x_dim)  # sample_mask_tf(bs=bs, nb_genes=self.x_dim)
+            output_mask = mask * (1 - input_mask)
+            input_mask = mask * input_mask
+        else:
+            output_mask = (1 - mask)
+            input_mask = mask
+        # input_mask = sample_mask(bs=self.config, nb_genes=self.x_dim)
 
         # Compute predictions
         y_pred = self.call((x, cat, num, input_mask), training=False)

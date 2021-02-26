@@ -6,28 +6,36 @@ metric:
   name: val_loss
 parameters:
   gpu:
-    value: 0
+    value: 1
   dataset:
     value: 'GTEx'
   pathway:
     value: ''
   model:
-    value: 'UnguidedImputer'
+    value: 'GAINGTEx'
   inplace_mode:
     value: False
   sweep:
     value: True
+  lambd_sup:
+    values: [1, 10]
+  m_low:
+    desc: Max probability of m
+    value: 0.5
+  m_high:
+    desc: Min probability of m
+    value: 0.5
   lr:
     desc: Learning rate for optimiser
-    values: [0.001, 0.0001]
+    value: 0.001
   batch_size:
-    value: 32
+    values: [32, 64, 126]
   dropout:
     desc: Probability of dropping out a hidden unit
     values: [0, 0.1, 0.2, 0.3, 0.4, 0.5]
   bn:
     desc: Whether to use batch normalisation
-    value: True
+    values: [True, False]
   epochs:
     desc: Maximum number of epochs to run
     value: 100

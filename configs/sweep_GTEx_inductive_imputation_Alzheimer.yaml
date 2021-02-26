@@ -10,7 +10,7 @@ parameters:
   dataset:
     value: 'GTEx'
   pathway:
-    value: ''
+    value: 'Alzheimer'
   model:
     value: 'UnguidedImputer'
   inplace_mode:
@@ -38,7 +38,7 @@ parameters:
     value: 10
   nb_layers:
     desc: Number of hidden layers
-    values: [1, 2, 3, 4]
+    values: [1, 2]
   hdim:
     desc: Hidden dimension of MLPs
     min: 100

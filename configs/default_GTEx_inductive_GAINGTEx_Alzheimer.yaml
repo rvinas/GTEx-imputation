@@ -5,7 +5,7 @@ dataset:
 pathway:
   value: 'Alzheimer'
 model:
-  value: 'UnguidedImputer'  # value: 'InductiveImputer'
+  value: 'GAINGTEx'
 inplace_mode:
   value: False
 sweep:
@@ -14,10 +14,12 @@ lr:
   desc: Learning rate for optimiser
   value: 0.001
 batch_size:
-  value: 32
+  value: 64
 dropout:
   desc: Probability of dropping out a hidden unit
-  value: 0.2
+  value: 0
+lambd_sup:
+  value: 10
 bn:
   desc: Whether to use batch normalisation
   value: True
@@ -34,16 +36,14 @@ steps_per_epoch:
   desc: Number of train steps per epoch
   value: 100
 patience:
-  value: 10
+  value: 30
 nb_layers:
   desc: Number of hidden layers
-  value: 2
+  value: 3
 hdim:
   desc: Hidden dimension of MLPs
-  value: 1531
+  value: 54
 save:
   value: True
 save_dir:
   value: '/local/scratch/rv340/gtex_imputation'
-random_seed:
-  value: 0

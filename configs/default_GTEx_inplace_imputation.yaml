@@ -1,13 +1,13 @@
 gpu:
-  value: 1
+  value: 2
 dataset:
   value: 'GTEx'
 pathway:
-  value: 'Alzheimer'
+  value: ''
 model:
   value: 'UnguidedImputer'  # value: 'InductiveImputer'
 inplace_mode:
-  value: False
+  value: True
 sweep:
   value: False
 lr:
@@ -34,13 +34,13 @@ steps_per_epoch:
   desc: Number of train steps per epoch
   value: 100
 patience:
-  value: 10
+  value: 30
 nb_layers:
   desc: Number of hidden layers
-  value: 2
+  value: 1
 hdim:
   desc: Hidden dimension of MLPs
-  value: 1531
+  value: 3072
 save:
   value: True
 save_dir:

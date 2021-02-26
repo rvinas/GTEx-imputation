@@ -1,13 +1,13 @@
 gpu:
-  value: 1
+  value: 2
 dataset:
   value: 'GTEx'
 pathway:
   value: 'Alzheimer'
 model:
-  value: 'UnguidedImputer'  # value: 'InductiveImputer'
+  value: 'GAINGTEx'
 inplace_mode:
-  value: False
+  value: True
 sweep:
   value: False
 lr:
@@ -17,7 +17,9 @@ batch_size:
   value: 32
 dropout:
   desc: Probability of dropping out a hidden unit
-  value: 0.2
+  value: 0.4
+lambd_sup:
+  value: 1
 bn:
   desc: Whether to use batch normalisation
   value: True
@@ -37,13 +39,11 @@ patience:
   value: 10
 nb_layers:
   desc: Number of hidden layers
-  value: 2
+  value: 3
 hdim:
   desc: Hidden dimension of MLPs
-  value: 1531
+  value: 296
 save:
   value: True
 save_dir:
   value: '/local/scratch/rv340/gtex_imputation'
-random_seed:
-  value: 0
