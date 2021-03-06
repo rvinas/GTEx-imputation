@@ -30,17 +30,20 @@ python imputation.py --config configs/<config_file>.yaml
 
 ## Architecture
 
-<img src="architecture.png" width="500">
+<img src="figures/architecture.png" width="1000">
 Figure 1: Architecture of GAIN-GTEx.
 
 
 ## Results
-![Tissue results](tissue_results.png)
+![Tissue results](figures/tissue_results.png)
 Figure 2: R2 imputation scores per GTEx tissue with a missing rate of 50%. Each box shows the distribution of the per-gene R2 scores in the extended test set (where all the tissues are equally represented). The colour of each box represents the number of training samples of the corresponding tissue.
-![Tissue embeddings](tissue_embeddings.png)
+![Tissue embeddings](figures/tissue_embeddings.png)
 Figure 3: UMAP visualisation of the tissue embeddings from the generator. Colors are assigned toconform to the GTEx Consortium conventions. Note that the central nervous system, consisting ofthe 13 brain tissues, clusters together on the top right corner.
-![R2 across missing rate](r2_missingrate.png)
+![R2 across missing rate](figures/r2_missingrate.png)
 Figure 4: R2 imputation scores per tissue across missing rate for 3 TCGA cancers and their healthy counterpart in GTEx (test set). The shaded area represents one standard deviation of the per-gene R2 scores in the corresponding tissue. The greater the rate of missingness, the lower the performance.
+![R2 across missing rate](figures/r2_missingrate.png)
+Figure 4: R2 imputation scores per tissue across missing rate for 3 TCGA cancers and their healthy counterpart in GTEx (test set). The shaded area represents one standard deviation of the per-gene R2 scores in the corresponding tissue. The greater the rate of missingness, the lower the performance.
+![R2 across missing rate](figures/top_last_30_genes_alzheimer.png) Per-gene imputation $R^2$ scores on genes from the Alzheimer's disease pathway. Each point represents the average $R^2$ score in a tissue type.
 
 ## Citation
 If you use this code for your research, please cite our paper:
