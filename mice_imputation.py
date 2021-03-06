@@ -55,7 +55,7 @@ if __name__ == '__main__':
 
         # Train model
         t = time.time()
-        imputer = IterativeImputer()
+        imputer = IterativeImputer(max_iter=100)
         imputer.fit(x_input)
         x_imp = imputer.transform(x_test_input)
 

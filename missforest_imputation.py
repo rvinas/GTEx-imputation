@@ -15,11 +15,13 @@ if __name__ == '__main__':
     parser.add_argument('--runs', dest='runs', default=3, type=int)
     parser.add_argument('--m_low', dest='m_low', default=0.5, type=float)
     parser.add_argument('--m_high', dest='m_high', default=0.5, type=float)
+    parser.add_argument('--pathway', dest='pathway', default='', type=str)
+
     # args = parser.parse_args()
     args, unknown = parser.parse_known_args()
     model = 'MissForest_{}trees'.format(args.nt)
-    pathway = 'Alzheimer'
-    inplace_mode = True
+    pathway = args.pathway
+    inplace_mode = True  # args.inplace_mode
 
     # Load data
     for i in range(args.runs):
@@ -29,6 +31,8 @@ if __name__ == '__main__':
                                           inplace_mode=inplace_mode,
                                           random_seed=i)
         (x, cc, nc, mask), _ = generator.train_sample_MCAR(size=len(generator.sample_ids_train))
+        if type(mask) is tuple:
+            mask = mask[0]
         cc = get_dummies(cc)
         mask_zeros = np.copy(mask)
         mask[mask == 0] = np.nan
