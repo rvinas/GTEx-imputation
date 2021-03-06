@@ -43,7 +43,8 @@ Figure 3: UMAP visualisation of the tissue embeddings from the generator. Colors
 Figure 4: R2 imputation scores per tissue across missing rate for 3 TCGA cancers and their healthy counterpart in GTEx (test set). The shaded area represents one standard deviation of the per-gene R2 scores in the corresponding tissue. The greater the rate of missingness, the lower the performance.
 ![R2 across missing rate](figures/r2_missingrate.png)
 Figure 4: R2 imputation scores per tissue across missing rate for 3 TCGA cancers and their healthy counterpart in GTEx (test set). The shaded area represents one standard deviation of the per-gene R2 scores in the corresponding tissue. The greater the rate of missingness, the lower the performance.
-![R2 across missing rate](figures/top_last_30_genes_alzheimer.png) Per-gene imputation $R^2$ scores on genes from the Alzheimer's disease pathway. Each point represents the average $R^2$ score in a tissue type.
+![R2 across missing rate](figures/top_last_30_genes_alzheimer.png)
+Figure 5: Per-gene imputation $R^2$ scores on genes from the Alzheimer's disease pathway. Each point represents the average $R^2$ score in a tissue type.
 
 ## Citation
 If you use this code for your research, please cite our paper:
