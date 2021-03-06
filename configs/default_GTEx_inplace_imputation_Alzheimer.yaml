@@ -17,7 +17,7 @@ batch_size:
   value: 32
 dropout:
   desc: Probability of dropping out a hidden unit
-  value: 0.4
+  value: 0
 bn:
   desc: Whether to use batch normalisation
   value: True
@@ -37,10 +37,14 @@ patience:
   value: 30
 nb_layers:
   desc: Number of hidden layers
-  value: 3  # 1
+  value: 3
 hdim:
   desc: Hidden dimension of MLPs
-  value: 1787  # 296  # 2000
+  value: 1383
+alpha:
+  value: 0.6
+beta:
+  value: 0.9
 save:
   value: True
 save_dir:

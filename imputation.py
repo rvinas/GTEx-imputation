@@ -48,13 +48,19 @@ def train(config):
         baseline=None,
         restore_best_weights=False,
     )
-
-    model.fit(generator.train_iterator_MCAR(),
-              validation_data=generator.val_sample_MCAR(),
+    alpha = 0.5
+    beta = 0.5
+    if 'alpha' in config:
+        alpha = config.alpha
+    elif 'beta' in config:
+        beta = config.beta
+    model.fit(generator.train_iterator_MCAR(alpha=alpha, beta=beta),
+              validation_data=generator.val_sample_MCAR(alpha=alpha, beta=beta),
               epochs=config.epochs,
               steps_per_epoch=config.steps_per_epoch,
               callbacks=[WandbCallback(), early_stopper])
-    model.save('{}/checkpoints/{}_inplace{}_{}'.format(config.save_dir, config.model, config.inplace_mode, config.pathway))
+    model.save(
+        '{}/checkpoints/{}_inplace{}_{}'.format(config.save_dir, config.model, config.inplace_mode, config.pathway))
 
     return model, generator
 
@@ -100,6 +106,3 @@ if __name__ == '__main__':
 
     print('Model: {}, Inplace: {}, Pathway: {}, Time: {}, R2: {}'
           .format(config.model, config.inplace_mode, config.pathway, t, r2))
-
-
-

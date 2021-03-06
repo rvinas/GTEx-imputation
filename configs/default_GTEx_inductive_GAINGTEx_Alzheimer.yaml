@@ -1,5 +1,5 @@
 gpu:
-  value: 1
+  value: 3
 dataset:
   value: 'GTEx'
 pathway:
@@ -14,7 +14,7 @@ lr:
   desc: Learning rate for optimiser
   value: 0.001
 batch_size:
-  value: 64
+  value: 128 # 64
 dropout:
   desc: Probability of dropping out a hidden unit
   value: 0

@@ -44,9 +44,10 @@ class UnguidedImputer(BaseImputer):
         x, cat, num, mask = x
 
         mask, input_mask = mask
-        if self.config.inplace_mode:  # mask should be all ones
+        if self.config.inplace_mode:
             output_mask = mask * (1 - input_mask)
-        else:
+            input_mask = mask * input_mask
+        else:   # mask should be all ones
             output_mask = (1 - input_mask)
 
         with tf.GradientTape() as tape:

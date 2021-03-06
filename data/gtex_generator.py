@@ -59,6 +59,7 @@ class GTExGenerator:
         cat_dicts.append(tissues_dict_inv)
         cat_covs = np.concatenate((cat_covs, tissues[:, None]), axis=-1)
         cat_covs = np.int32(cat_covs)
+        self.tissues_dict = tissues_dict
         self.tissues_dict_inv = tissues_dict_inv
         self.vocab_sizes = [len(c) for c in cat_dicts]
         self.nb_categorical = cat_covs.shape[-1]
@@ -117,14 +118,14 @@ class GTExGenerator:
         return x, cc, nc
     """
 
-    def train_sample_MCAR(self, size=None):
+    def train_sample_MCAR(self, size=None, alpha=0.5, beta=0.5):
         if size is None:
             size = self.batch_size
         sample_idxs = np.random.choice(self.x_train.shape[0], size=size, replace=False)
         x = self.x_train[sample_idxs]
         cc = self.cat_covs_train[sample_idxs]
         nc = self.num_covs_train[sample_idxs]
-        mask_2 = sample_mask(size, self.nb_genes, m_low=self.m_low, m_high=self.m_high)
+        mask_2 = sample_mask(size, self.nb_genes, m_low=alpha, m_high=beta)
         if self.inplace_mode:
             mask_1 = self.train_mask[sample_idxs]
         else:
@@ -135,9 +136,9 @@ class GTExGenerator:
         # y = (1 - mask) * x
         return (x, cc, nc, mask), x
 
-    def train_iterator_MCAR(self):
+    def train_iterator_MCAR(self, alpha=0.5, beta=0.5):
         while True:
-            yield self.train_sample_MCAR()
+            yield self.train_sample_MCAR(size=self.batch_size, alpha=alpha, beta=beta)
 
     def val_sample(self):
         x = self.x_val
@@ -145,11 +146,11 @@ class GTExGenerator:
         nc = self.num_covs_val
         return x, cc, nc
 
-    def val_sample_MCAR(self):
+    def val_sample_MCAR(self, alpha=0.5, beta=0.5):
         x, cc, nc = self.val_sample()
         # size = x.shape[0]
         if self.inplace_mode:
-            input_mask = sample_mask(x.shape[0], self.nb_genes, m_low=self.m_low, m_high=self.m_high)
+            input_mask = sample_mask(x.shape[0], self.nb_genes, m_low=alpha, m_high=beta)
             mask = (self.val_mask, input_mask)  # Trick to speed up training
         else:
             mask = sample_mask(x.shape[0], self.nb_genes, m_low=self.m_low, m_high=self.m_high)

@@ -211,12 +211,13 @@ class GAINGTEx(BaseImputer):
             x_gen = self.call((x * mask, cat, num, mask), training=True)
             x_gen_ = x * mask + x_gen * (1 - mask)
 
-            # Forward pass on discriminator
-            disc_out = self.disc([x_gen_, cat, num, hint], training=False)
-
             # Compute losses
             sup_loss = self.config['lambd_sup'] * self.supervised_loss(x, x_gen, mask)
-            gen_loss = self.generator_loss(mask, disc_out, b) + sup_loss
+            gen_loss = sup_loss
+
+            # Forward pass on discriminator
+            disc_out = self.disc([x_gen_, cat, num, hint], training=False)
+            gen_loss += self.generator_loss(mask, disc_out, b)
 
         gen_grad = gen_tape.gradient(gen_loss, self.gen.trainable_variables)
         self.gen_opt.apply_gradients(zip(gen_grad, self.gen.trainable_variables))
@@ -250,9 +251,10 @@ class GAINGTEx(BaseImputer):
 
         # Compute losses
         sup_loss = self.config['lambd_sup'] * self.supervised_loss(x, x_gen, mask)
-        gen_loss = self.generator_loss(mask, disc_out, b) + sup_loss
-        disc_loss = self.discriminator_loss(mask, disc_out, b)
         pred_loss = self.supervised_loss(x, x_gen, 1 - mask)
+        gen_loss = sup_loss
+        gen_loss += self.generator_loss(mask, disc_out, b)
+        disc_loss = self.discriminator_loss(mask, disc_out, b)
 
         # Update the metrics.
         self.compiled_metrics.update_state(x, x_gen)

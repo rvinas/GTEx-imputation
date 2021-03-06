@@ -39,10 +39,10 @@ patience:
   value: 30
 nb_layers:
   desc: Number of hidden layers
-  value: 1
+  value: 3  # 1
 hdim:
   desc: Hidden dimension of MLPs
-  value: 2403
+  value: 296  # 2403
 save:
   value: True
 save_dir:
