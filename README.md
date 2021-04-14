@@ -1,5 +1,5 @@
-# Deep learning enables fast and accurate imputation of gene expression across tissues [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/rvinas/GAIN-GTEx/blob/master/LICENSE) [![Python 3.5+](https://img.shields.io/badge/python-3.5+-blue.svg)](https://www.python.org/downloads/release/python-350/)
-This repository contains the code for the paper [Deep learning enables fast and accurate imputation of gene expression across tissues](https://www.frontiersin.org/articles/10.3389/fgene.2021.624128/full)
+# Deep learning enables fast and accurate imputation of gene expression [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/rvinas/GAIN-GTEx/blob/master/LICENSE) [![Python 3.5+](https://img.shields.io/badge/python-3.5+-blue.svg)](https://www.python.org/downloads/release/python-350/)
+This repository contains the code for the paper [Deep learning enables fast and accurate imputation of gene expression](https://www.frontiersin.org/articles/10.3389/fgene.2021.624128/full)
 
 **Authors:** Ramon Viñas, Tiago Azevedo, Eric R. Gamazon, and Pietro Liò
 
