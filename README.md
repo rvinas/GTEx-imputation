@@ -1,5 +1,5 @@
 # Deep learning enables fast and accurate imputation of gene expression across tissues [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/rvinas/GAIN-GTEx/blob/master/LICENSE) [![Python 3.5+](https://img.shields.io/badge/python-3.5+-blue.svg)](https://www.python.org/downloads/release/python-350/)
-This repository contains the code for the paper [Deep learning enables fast and accurate imputation of gene expression across tissues](https://www.biorxiv.org/content/10.1101/2020.06.09.141689v2.full)
+This repository contains the code for the paper [Deep learning enables fast and accurate imputation of gene expression across tissues](https://www.frontiersin.org/articles/10.3389/fgene.2021.624128/full)
 
 **Authors:** Ramon Viñas, Tiago Azevedo, Eric R. Gamazon, and Pietro Liò
 
@@ -52,13 +52,14 @@ If you use this code for your research, please cite our paper:
 ```
 @article{Vinas2020gene,
 	author = {Vi{\~n}as, Ramon and Azevedo, Tiago and Gamazon, Eric R. and Li{\`o}, Pietro},
-	title = {Gene Expression Imputation with Generative Adversarial Imputation Nets},
-	year = {2020},
-	doi = {10.1101/2020.06.09.141689},
-	publisher = {Cold Spring Harbor Laboratory},
-	URL = {https://www.biorxiv.org/content/early/2020/06/13/2020.06.09.141689},
-	eprint = {https://www.biorxiv.org/content/early/2020/06/13/2020.06.09.141689.full.pdf},
-	journal = {bioRxiv}
+	title = {Deep Learning Enables Fast and Accurate Imputation of Gene Expression},
+	volume={12},      
+	pages={489}, 
+	year = {2021},
+	doi = {10.3389/fgene.2021.624128},
+	ISSN={1664-8021},
+	journal={Frontiers in Genetics}, 
+	url = {https://www.frontiersin.org/article/10.3389/fgene.2021.624128},
 }
 ```
 
