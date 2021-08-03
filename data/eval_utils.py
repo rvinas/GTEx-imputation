@@ -29,7 +29,10 @@ def r2_scores(x_gt, x_pred, mask):
     mask_r = np.copy(mask)
     mask_r[mask_r == 1] = np.nan
 
-    gene_means = np.mean(x_gt, axis=0)  # Shape=(nb_genes,)
+    x_obs = x_gt * mask
+    x_obs[x_obs == 0] = np.nan
+    
+    gene_means = np.nanmean(x_obs, axis=0)  # Shape=(nb_genes,)
     mask_r[:, gene_means == 0] = np.nan  # Discard genes with 0 variance
     ss_res = np.nansum((1 - mask_r) * (x_gt - x_pred) ** 2, axis=0)
     ss_tot = np.nansum((1 - mask_r) * (x_gt - gene_means) ** 2, axis=0)
@@ -49,7 +52,10 @@ def r2_scores_3d(x_test_extended, x_gen_extended, mask, nb_tissues=49):
     mask_r = np.copy(mask.reshape((nb_tissues, -1, nb_genes)))
     mask_r[mask_r == 1] = np.nan
 
-    gene_means = np.mean(x_test_extended_r, axis=1)  # Shape=(nb_tissues, nb_genes)
+    x_test_extended_obs = x_test_extended_r * mask.reshape((nb_tissues, -1, nb_genes))
+    x_test_extended_obs[x_test_extended_obs == 0] = np.nan
+    
+    gene_means = np.nanmean(x_test_extended_obs, axis=1)  # Shape=(nb_tissues, nb_genes)
 
     ss_res = np.nansum((1 - mask_r) * (x_test_extended_r - x_gen_extended_r) ** 2, axis=1)
     ss_tot = np.nansum((1 - mask_r) * (x_test_extended_r - gene_means[:, None, :]) ** 2, axis=1)
