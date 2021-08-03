@@ -89,7 +89,7 @@ if __name__ == '__main__':
 
         # Save test loss
         x_miss = (1 - ms) * x_test_gt
-        r2 = np.mean(r2_scores(x_miss, x_test_imputed, ms))
+        r2 = np.mean(r2_scores(x_test_gt, x_test_imputed, ms))
 
         # Save results
         name = '{}_inplace{}_{}'.format(model, inplace_mode, pathway)
