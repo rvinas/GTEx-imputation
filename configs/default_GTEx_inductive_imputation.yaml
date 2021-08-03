@@ -5,7 +5,7 @@ dataset:
 pathway:
   value: ''
 model:
-  value: 'UnguidedImputer'  # value: 'InductiveImputer'
+  value: 'PseudoMaskImputer'  # value: 'InductiveImputer'
 inplace_mode:
   value: False
 sweep:

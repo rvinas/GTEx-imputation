@@ -6,11 +6,11 @@ metric:
   name: val_loss
 parameters:
   gpu:
-    value: 1
+    value: 2
   dataset:
     value: 'GTEx'
   pathway:
-    value: ''
+    value: 'Alzheimer'
   model:
     value: 'GAINGTEx'
   inplace_mode:
@@ -18,7 +18,7 @@ parameters:
   sweep:
     value: True
   lambd_sup:
-    values: [1, 10]
+    value: 1
   m_low:
     desc: Max probability of m
     value: 0.5
@@ -50,7 +50,7 @@ parameters:
   hdim:
     desc: Hidden dimension of MLPs
     min: 100
-    max: 3000
+    max: 2000
   save:
     value: False
   save_dir:

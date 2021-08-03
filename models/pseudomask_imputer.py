@@ -8,10 +8,10 @@ tfk = tf.keras
 tfkl = tf.keras.layers
 
 
-class UnguidedImputer(BaseImputer):
+class PseudoMaskImputer(BaseImputer):
     def __init__(self, x_dim, vocab_sizes, nb_numeric, nb_categoric, config, m_low=0.5, m_high=0.5, name='UnguidedImputer', **kwargs):
-        super(UnguidedImputer, self).__init__(x_dim, vocab_sizes, nb_numeric, nb_categoric, config, name=name,
-                                               **kwargs)
+        super(PseudoMaskImputer, self).__init__(x_dim, vocab_sizes, nb_numeric, nb_categoric, config, name=name,
+                                                **kwargs)
         self.m_low = m_low
         self.m_high = m_high
 

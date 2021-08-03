@@ -12,7 +12,7 @@ parameters:
   pathway:
     value: ''
   model:
-    value: 'UnguidedImputer'
+    value: 'PseudoMaskImputer'
   inplace_mode:
     value: True
   sweep:
@@ -36,7 +36,7 @@ parameters:
     values: [True, False]
   epochs:
     desc: Maximum number of epochs to run
-    value: 200
+    value: 500
   steps_per_epoch:
     desc: Number of train steps per epoch
     value: 100
@@ -48,8 +48,12 @@ parameters:
   hdim:
     desc: Hidden dimension of MLPs
     min: 100
-    max: 1000
+    max: 2000
   save:
     value: False
+  alpha:
+    values: [0.3, 0.4, 0.5, 0.6]
+  beta:
+    values: [0.6, 0.7, 0.8, 0.9]
   save_dir:
     value: '/local/scratch/rv340/gtex_imputation'

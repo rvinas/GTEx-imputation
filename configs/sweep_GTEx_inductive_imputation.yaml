@@ -12,7 +12,7 @@ parameters:
   pathway:
     value: ''
   model:
-    value: 'UnguidedImputer'
+    value: 'PseudoMaskImputer'
   inplace_mode:
     value: False
   sweep:

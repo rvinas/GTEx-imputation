@@ -95,7 +95,7 @@ if __name__ == '__main__':
     x_obs = mask * x
     x_miss = (1 - mask) * x
     x_imp = model((x_obs, cc, nc, mask))  # imputer.impute((x_observed, cc, nc, mask))
-    r2 = np.mean(r2_scores(x_miss, x_imp, mask))
+    r2 = np.mean(r2_scores(x, x_imp, mask))
 
     # Save results
     name = '{}_inplace{}_{}'.format(config.model, config.inplace_mode, config.pathway)

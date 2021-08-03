@@ -54,7 +54,7 @@ if __name__ == '__main__':
 
         # Save test loss
         x_miss = (1 - mask_zeros) * x
-        r2 = np.mean(r2_scores(x_miss, x_imp, mask_zeros))
+        r2 = np.mean(r2_scores(x, x_imp, mask_zeros))
 
         # Save results
         name = '{}_inplace{}_{}'.format(model, inplace_mode, pathway)
